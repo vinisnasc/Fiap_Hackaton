@@ -1,4 +1,5 @@
-﻿using Fiap_Hackaton.Identity.API.Models.Constantes;
+﻿using Fiap_Hackaton.Identity.API.Models;
+using Fiap_Hackaton.Identity.API.Models.Constantes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ namespace Fiap_Hackaton.Identity.API.Data;
 public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+    public DbSet<UsuarioAplicacao> UsuariosAplicacao { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -33,12 +33,13 @@ public class AuthController : ControllerBase
 
         var user = new UsuarioAplicacao
         {
-            UserName = model.Nome,
-            NormalizedUserName = model.Nome.ToUpper(),
+            UserName = model.Email,
+            NormalizedUserName = model.Email.ToUpper(),
             EmailConfirmed = true,
             Identificacao = model.Identificacao,
             Especializacao = model.Especializacao,
-            Email = model.Email
+            Email = model.Email,
+            Nome = model.Nome,
         };
 
         bool ehPaciente = false;
@@ -60,8 +61,9 @@ public class AuthController : ControllerBase
         if (result.Succeeded)
         {
             await _signInManager.SignInAsync(user, isPersistent: false);
-            return Ok(await GerarJwt(model.Identificacao));
+            return Ok(await GerarJwt(model.Email));
         }
+
 
         return BadRequest();
     }
@@ -80,7 +82,7 @@ public class AuthController : ControllerBase
 
     private async Task<UsuarioRespostaLogin> GerarJwt(string email)
     {
-        var usuario = await _userManager.FindByNameAsync(email);
+        var usuario = await _userManager.FindByEmailAsync(email);
         var claims = await _userManager.GetClaimsAsync(usuario);
         var userRoles = await _userManager.GetRolesAsync(usuario);
 
