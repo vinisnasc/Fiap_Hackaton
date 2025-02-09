@@ -10,5 +10,6 @@ namespace Fiap_Hackaton.Health_Med.Domain.Interfaces.Services
         Task<List<SolicitacaoAgendamento>> VisualizarPedidos();
         Task<List<SolicitacaoAgendamento>> VisualizarPedidosPaciente();
         Task AprovarAgendamento(Guid id);
+        Task RecusarAgendamento(Guid id);
     }
 }

@@ -55,5 +55,13 @@ namespace Fiap_Hackaton.Health_Med.API.Controllers
             await _agendaService.AprovarAgendamento(idAgendamento);
             return CustomResponse();
         }
+
+        [HttpDelete("RecusarConsulta")]
+        [Authorize(Roles = "Medico")]
+        public async Task<IActionResult> RecusarAgendamento(Guid idAgendamento)
+        {
+            await _agendaService.RecusarAgendamento(idAgendamento);
+            return CustomResponse();
+        }
     }
 }

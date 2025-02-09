@@ -90,8 +90,30 @@ namespace Fiap_Hackaton.Health_Med.Services
                 else
                     agend.Aprovado = false;
 
-                _repository.Alterar(agend);
+                await _repository.Alterar(agend);
             }
+        }
+
+        public async Task RecusarAgendamento(Guid id)
+        {
+            var agendamento = await _repository.SelecionarPorId(id);
+
+            if (agendamento is null)
+            {
+                Notificate("Agendamento nao encontrado");
+                return;
+            }
+
+            if(agendamento.Aprovado == false)
+            {
+                Notificate("Agendamento já está recusado");
+                return;
+            }
+
+            agendamento.Aprovado = false;
+
+            await _repository.Alterar(agendamento);
+
         }
     }
 }
