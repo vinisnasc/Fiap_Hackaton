@@ -1,4 +1,5 @@
 ﻿using Fiap_Hackaton.Health_Med.Domain.Entities;
+using Fiap_Hackaton.Health_Med.Domain.Extensions;
 using Fiap_Hackaton.Health_Med.Domain.Interfaces.Repository;
 using Fiap_Hackaton.Health_Med.Domain.Interfaces.Services;
 using Fiap_Hackaton.Health_Med.Domain.Models.Agendamento;
@@ -32,6 +33,8 @@ namespace Fiap_Hackaton.Health_Med.Services
 
         public async Task SolicitarAgendamento(DateTime data, Guid idMedico)
         {
+            data = data.ArredondarParaHoraAnterior();
+
             var existe = await _repository.Buscar(x => x.IdPaciente == Guid.Parse(_currentUser.UserId) && x.Horario == data && (x.Aprovado == null || x.Aprovado == true));
 
             if (existe is not null)
