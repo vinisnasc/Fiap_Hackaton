@@ -1,10 +1,11 @@
 ﻿namespace Fiap_Hackaton.Health_Med.Domain.Entities
 {
-    internal class Agendamento
+    public class Agendamento : BaseEntity
     {
         public Guid IdPaciente { get; set; }
         public Guid IdMedico { get; set; }
         public DateTime Horario { get; set; }
-        public bool Aprovado { get; set; } // obs: quando o medico aprovar, desaprovar todos do mesmo horario
+        public bool? Aprovado { get; set; }
+        public decimal Valor { get; set; }
     }
 }

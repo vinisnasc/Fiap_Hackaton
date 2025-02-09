@@ -3,6 +3,7 @@ using Fiap_Hackaton.Identity.API.Models;
 using Fiap_Hackaton.Identity.API.Models.Constantes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -50,7 +51,10 @@ public class AuthController : ControllerBase
         else if (CRMValidator.IsValid(model.Identificacao))
             ehPaciente = false;
 
-        else return BadRequest();
+        else return BadRequest("Identificacao Invalida!");
+
+        var userExiste = await _userManager.FindByEmailAsync(user.Email);
+        if (userExiste is not null) return BadRequest("Usuario já existe");
 
         var result = await _userManager.CreateAsync(user, model.Senha);
 
@@ -65,7 +69,7 @@ public class AuthController : ControllerBase
         }
 
 
-        return BadRequest();
+        return BadRequest("Algo errado ocorreu!");
     }
 
     [HttpPost("logar")]
@@ -73,9 +77,13 @@ public class AuthController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest();
 
-        var result = await _signInManager.PasswordSignInAsync(model.Identificacao, model.Senha, false, true);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Identificacao == model.Identificacao);
 
-        if (result.Succeeded) return Ok(await GerarJwt(model.Identificacao));
+        if (user == null) return Unauthorized("Usuário não encontrado");
+
+        var result = await _signInManager.PasswordSignInAsync(user, model.Senha, false, true);
+
+        if (result.Succeeded) return Ok(await GerarJwt(user.Email));
 
         return BadRequest();
     }

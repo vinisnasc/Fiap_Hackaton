@@ -1,4 +1,6 @@
 ﻿using Fiap_Hackaton.Health_Med.Domain.Interfaces.Services;
+using Fiap_Hackaton.Health_Med.Domain.Models.Auth;
+using Fiap_Hackaton.Health_Med.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,21 +10,32 @@ namespace Fiap_Hackaton.Health_Med.API.Controllers;
 [ApiController]
 public class AuthController : BaseController
 {
-    public AuthController(INotificator notificator) : base(notificator)
+    private readonly IAuthService _authService;
+
+    public AuthController(INotificator notificator, IAuthService authService) : base(notificator)
     {
+        _authService = authService;
     }
 
-    [HttpGet]
-    [Authorize(Roles = "Paciente")]
-    public async Task<IActionResult> RetornaOk()
+    [HttpPost("RegistroPaciente")]
+    //
+    public async Task<IActionResult> RegistraPaciente(RegistroPaciente registroPaciente)
     {
-        return Ok();
+        var result = await _authService.Registrar(registroPaciente);
+        return CustomResponse(result);
     }
 
-    [HttpGet("teste")]
-    [Authorize(Roles = "Medico")]
-    public async Task<IActionResult> RetornaBadRequest()
+    [HttpPost("RegistroMedico")]
+    public async Task<IActionResult> RegistraMedico(RegistroMedico registroMedico)
     {
-        return Ok();
+        var result = await _authService.Registrar(registroMedico);
+        return Ok();// CustomResponse(result);
+    }
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(LoginModel model)
+    {
+        var result = await _authService.Logar(model);
+        return CustomResponse(result);
     }
 }

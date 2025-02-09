@@ -10,10 +10,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Fiap_Hackaton.Health_Med.Services\Fiap_Hackaton.Health_Med.Services.csproj" />
+    <ProjectReference Include="..\Fiap_Hackaton.Health_Med.Data\Fiap_Hackaton.Health_Med.Data.csproj" />
     <ProjectReference Include="..\Fiap_Hackaton.Health_Med.Domain\Fiap_Hackaton.Health_Med.Domain.csproj" />
   </ItemGroup>
 

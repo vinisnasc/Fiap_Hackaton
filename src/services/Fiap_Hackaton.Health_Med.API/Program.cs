@@ -3,7 +3,7 @@ using Fiap_Hackaton.Health_Med.API.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiConfiguration();
-builder.Services.AddDependencyInjectionConfiguration();
+builder.Services.AddDependencyInjectionConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddIdentityConfig(builder.Configuration);
 builder.Services.AddOpenApi();
